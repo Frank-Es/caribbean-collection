@@ -1,1 +1,1 @@
-# ibis-romana-caribbean
+# caribbean-colletion
