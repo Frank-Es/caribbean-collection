@@ -1017,44 +1017,6 @@ kAjjATOIAsBY3iPO1gAWLoFoQTGJJFn8rOto1vqqCw4JWubKe8NSOEELnRm3ZOgiDTe0GjS9waglRHJO
       </div>
     </div>
   </div>
-    async function submitForm(event) {
-  event.preventDefault();
-  
-  const form = event.target;
-  const btn = document.getElementById('submit-btn');
-  const originalContent = btn.innerHTML;
-  
-  // URL del Webhook de Make.com que ya tienes
-  const webhookURL = 'https://hook.eu1.make.com/e6uancdwwc9a17mkav974tblo1x6a1jd';
-
-  // Deshabilitar botón para evitar doble envío
-  btn.innerText = "ENVIANDO...";
-  btn.disabled = true;
-
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-
-  try {
-    const response = await fetch(webhookURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-
-    if (response.ok) {
-      alert('¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.');
-      form.reset();
-    } else {
-      throw new Error('Error en el servidor');
-    }
-  } catch (error) {
-    alert('Hubo un problema al enviar el mensaje. Por favor, inténtelo de nuevo.');
-  } finally {
-    // Restaurar botón
-    btn.innerHTML = originalContent;
-    btn.disabled = false;
-  }
-}
 </section>
 <!-- FOOTER -->
 <footer>
@@ -1200,6 +1162,47 @@ document.querySelectorAll('.svc-card,.pkg-card,.s360-card,.partner-card,.trust-c
   el.style.transition='opacity 0.5s ease,transform 0.5s ease';
   obs.observe(el);
 });
+</script>
+  <script>
+  async function submitForm(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const btn = document.getElementById('submit-btn');
+    // Guardamos el contenido original (icono + texto)
+    const originalBtnContent = btn.innerHTML;
+    
+    // URL de tu Webhook de Make.com
+    const webhookURL = 'https://hook.eu1.make.com/e6uancdwwc9a17mkav974tblo1x6a1jd';
+
+    // Feedback visual
+    btn.innerText = "ENVIANDO...";
+    btn.disabled = true;
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch(webhookURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        alert('¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.');
+        form.reset();
+      } else {
+        throw new Error('Error en el envío');
+      }
+    } catch (error) {
+      alert('Hubo un problema. Por favor, inténtalo de nuevo.');
+    } finally {
+      // Restauramos el botón a su estado original con el icono
+      btn.innerHTML = originalBtnContent;
+      btn.disabled = false;
+    }
+  }
 </script>
 </body>
 </html>
